@@ -1,19 +1,43 @@
 package vasiliy;
 
-import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.Vector;
 
-public class Commentator extends Thread{
+public class Commentator{
     private TreeSet<Player> resultTable = new TreeSet<>();
-    private int numberOfDice;
     private int numberOfPlayers;
     private int numberOfRoundsLeft = 2;
     private int currentMaxScore;
     private Player currentWinner;
     private int howManyPlayersLast;
 
-    public int getNumberOfDice(){
-        return numberOfDice;
+    public Commentator(int numberOfPlayers, int numberOfRoundsLeft){
+
+        this.numberOfPlayers = numberOfPlayers;
+        this.numberOfRoundsLeft = numberOfRoundsLeft;
+        currentMaxScore = 0;
+        howManyPlayersLast = numberOfPlayers;
+    }
+
+    public int getNumberOfRoundsLeft(){
+        return numberOfRoundsLeft;
+    }
+
+    public int getHowManyPlayersLast(){
+        return howManyPlayersLast;
+    }
+
+    public int getCurrentMaxScore(){
+        return currentMaxScore;
+    }
+
+    void decreaseNumberOfPlayers(){
+        --howManyPlayersLast;
+    }
+
+    void addPlayers(Vector<Player> players)
+    {
+        resultTable.addAll(players);
     }
 
     void writeResult(int points, Player player){
@@ -22,13 +46,14 @@ public class Commentator extends Thread{
             currentMaxScore = points;
         }
         // ToDo: Check for code style
-        if(howManyPlayersLast == 0){
+        if(howManyPlayersLast == 1){
             if(numberOfRoundsLeft != 0){
+                player.winIncrease();
                 System.out.println("We have winner! It is " + currentWinner +
                         "! He got " + currentMaxScore + " points!\n Congratulations!");
                 System.out.println("Our current leader is " + resultTable.first() + "!");
-                player.winIncrease();
                 currentMaxScore = 0;
+                howManyPlayersLast = numberOfPlayers;
                 --numberOfRoundsLeft;
             }
             else {
@@ -46,16 +71,7 @@ public class Commentator extends Thread{
     }
 
     public void printResultTable(){
-
-    }
-
-
-    @Override
-    public void run(){
-        resultTable.add(new Player("First thred", this));
-        resultTable.add(new Player("Second thred", this));
-        for(Player player : resultTable){
-            player.start();
-        }
+        System.out.println("Result table:");
+        //TODO: Finish Result Table
     }
 }
