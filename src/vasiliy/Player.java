@@ -6,8 +6,8 @@ public class Player extends Thread implements Comparable<Player>{
 
     private int countOfWins;
     private int numberOfDice;
+    final private static Random random = new Random();
     final private Commentator commentator;
-    final private Random random = new Random();
     final private static int AMOUNT_OF_SIDES = 6;
 
     public Player(String name, Commentator commentator, int numberOfDice){
@@ -17,38 +17,51 @@ public class Player extends Thread implements Comparable<Player>{
         this.numberOfDice = numberOfDice;
     }
 
+    public int getCountOfWins(){
+        return countOfWins;
+    }
+
     public void winIncrease(){
         ++countOfWins;
     }
 
-    @Override
-    public void run(){
+    private int getPoints(){
         int points = 0;
         for(int i = 0; i < numberOfDice; i++){
             points += random.nextInt(AMOUNT_OF_SIDES) + 1;
         }
+        return points;
+    }
+
+    @Override
+    public void run(){
         synchronized(commentator){
             try{
-                while(commentator.getNumberOfRoundsLeft() != 0){
+                while(commentator.getNumberOfRoundsLeft() != 1){
                     if(commentator.getHowManyPlayersLast() > 1){
                         if(commentator.getCurrentMaxScore() != AMOUNT_OF_SIDES * numberOfDice){
-                            commentator.writeResult(points, this);
+                            commentator.writeResult(getPoints(), this);
                         }
                         else {
                             commentator.decreaseNumberOfPlayers();
                         }
-                        System.out.println(getName() + "Waiting");
+                        //System.out.println("Waiting " + getName());
                         commentator.wait();
                     } else{
                         if(commentator.getCurrentMaxScore() != AMOUNT_OF_SIDES * numberOfDice){
-                            commentator.writeResult(points, this);
+                            commentator.writeResult(getPoints(), this);
                         }
                         else {
                             commentator.decreaseNumberOfPlayers();
+                            commentator.printRoundWinner();
                         }
-                        System.out.println(getName() + "NotofiALL");
+                        //System.out.println("Notify " + getName());
                         commentator.notifyAll();
                     }
+                }
+                int points = 0;
+                for(int i = 0; i < numberOfDice; i++){
+                    points += random.nextInt(AMOUNT_OF_SIDES) + 1;
                 }
                 if(commentator.getCurrentMaxScore() != AMOUNT_OF_SIDES * numberOfDice){
                     commentator.writeResult(points, this);
@@ -63,7 +76,7 @@ public class Player extends Thread implements Comparable<Player>{
 
     @Override
     public int compareTo(Player o){
-        return countOfWins - o.countOfWins;
+        return o.countOfWins - countOfWins;
     }
 
     @Override
