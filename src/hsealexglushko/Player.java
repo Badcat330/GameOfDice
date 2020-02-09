@@ -38,36 +38,43 @@ public class Player extends Thread implements Comparable<Player>{
         synchronized(commentator){
             try{
                 while(commentator.getNumberOfRoundsLeft() != 1){
+
                     if(commentator.getHowManyPlayersLast() > 1){
                         if(commentator.getCurrentMaxScore() != AMOUNT_OF_SIDES * numberOfDice){
                             commentator.writeResult(getPoints(), this);
-                        }
-                        else {
+                        } else {
                             commentator.decreaseNumberOfPlayers();
                         }
                         commentator.wait();
                     } else{
                         if(commentator.getCurrentMaxScore() != AMOUNT_OF_SIDES * numberOfDice){
                             commentator.writeResult(getPoints(), this);
-                        }
-                        else {
+                        } else {
                             commentator.decreaseNumberOfPlayers();
                             commentator.printRoundWinner();
                         }
                         commentator.notifyAll();
                     }
                 }
-                int points = 0;
-                for(int i = 0; i < numberOfDice; i++){
-                    points += random.nextInt(AMOUNT_OF_SIDES) + 1;
-                }
-                if(commentator.getCurrentMaxScore() != AMOUNT_OF_SIDES * numberOfDice){
-                    commentator.writeResult(points, this);
+                if(commentator.getHowManyPlayersLast() > 1){
+                    if(commentator.getCurrentMaxScore() != AMOUNT_OF_SIDES * numberOfDice){
+                        commentator.writeResult(getPoints(), this);
+                    } else {
+                        commentator.decreaseNumberOfPlayers();
+                    }
+                } else{
+                    if(commentator.getCurrentMaxScore() != AMOUNT_OF_SIDES * numberOfDice){
+                        commentator.writeResult(getPoints(), this);
+                    } else {
+                        commentator.decreaseNumberOfPlayers();
+                        commentator.printMatchWinner();
+                    }
                 }
 
-            }
-            catch(InterruptedException e){
+            } catch(InterruptedException e){
                 System.out.println("Something go wrong! Thread name: " + getName());
+            }  catch(Exception e){
+                System.out.println("Something go wrong " + e);
             }
         }
     }

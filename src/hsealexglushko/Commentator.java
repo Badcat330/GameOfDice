@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Vector;
 
 public class Commentator{
+
     private ArrayList<Player> resultTable = new ArrayList<>();
     private int numberOfPlayers;
     private int numberOfRoundsLeft = 2;
@@ -48,19 +49,14 @@ public class Commentator{
             currentWinner = player;
             currentMaxScore = points;
         }
+
         if(howManyPlayersLast == 1){
             if(numberOfRoundsLeft != 1){
                 printRoundWinner();
+            } else {
+                printMatchWinner();
             }
-            else {
-                player.winIncrease();
-                resultTable.sort(Player::compareTo);
-                System.out.println("All game win " + resultTable.get(0) + "! \n Congratulations! \n");
-                printResultTable();
-            }
-
-        }
-        else {
+        } else {
             System.out.println("Player " + player + " got " + points + " points!");
             System.out.println("Current winner is " + currentWinner + " with " + currentMaxScore + " points!\n");
             --howManyPlayersLast;
@@ -78,6 +74,13 @@ public class Commentator{
         --numberOfRoundsLeft;
     }
 
+    void printMatchWinner(){
+        currentWinner.winIncrease();
+        resultTable.sort(Player::compareTo);
+        System.out.println("All game win " + resultTable.get(0) + "! \n Congratulations! \n");
+        printResultTable();
+    }
+
     public void printResultTable(){
         System.out.println("Result table:");
         int i = 1;
@@ -87,4 +90,4 @@ public class Commentator{
             ++i;
         }
     }
-}
+} //class Commentator

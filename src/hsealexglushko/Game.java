@@ -1,6 +1,5 @@
 package hsealexglushko;
 
-import java.util.Scanner;
 import java.util.Vector;
 
 public class Game{
@@ -17,15 +16,16 @@ public class Game{
 
         try {
             number = Integer.parseInt(mayBeNumber);
-        }
-        catch (NumberFormatException e){
+        } catch (NumberFormatException e){
+            return number;
+        } catch(Exception e){
+            System.out.println("Something go wrong " + e);
             return number;
         }
 
         if(number < leftBound || number > rightBound){
             return null;
-        }
-        else {
+        } else {
             return number;
         }
     }
@@ -52,6 +52,7 @@ public class Game{
             players.add(new Player("Player " + i, commentator, numberOfDice));
         }
         commentator.addPlayers(players);
+
         for(Player player : players){
             System.out.println(player.getName() + " start the game!");
             player.start();
@@ -63,6 +64,8 @@ public class Game{
             }
         } catch(InterruptedException e){
             System.out.println("Has been interrupted");
+        } catch(Exception e){
+            System.out.println("Something go wrong " + e);
         }
     }
 }
