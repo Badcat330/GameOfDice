@@ -1,7 +1,6 @@
-package vasiliy;
+package hsealexglushko;
 
 import java.util.ArrayList;
-import java.util.TreeSet;
 import java.util.Vector;
 
 public class Commentator{
@@ -13,11 +12,14 @@ public class Commentator{
     private int howManyPlayersLast;
 
     public Commentator(int numberOfPlayers, int numberOfRoundsLeft){
-
         this.numberOfPlayers = numberOfPlayers;
         this.numberOfRoundsLeft = numberOfRoundsLeft;
         currentMaxScore = 0;
         howManyPlayersLast = numberOfPlayers;
+    }
+
+    ArrayList<Player> getResultTable(){
+        return resultTable;
     }
 
     public int getNumberOfRoundsLeft(){

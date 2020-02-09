@@ -1,4 +1,4 @@
-package vasiliy;
+package hsealexglushko;
 
 import java.util.Random;
 
@@ -25,7 +25,7 @@ public class Player extends Thread implements Comparable<Player>{
         ++countOfWins;
     }
 
-    private int getPoints(){
+    int getPoints(){
         int points = 0;
         for(int i = 0; i < numberOfDice; i++){
             points += random.nextInt(AMOUNT_OF_SIDES) + 1;
@@ -45,7 +45,6 @@ public class Player extends Thread implements Comparable<Player>{
                         else {
                             commentator.decreaseNumberOfPlayers();
                         }
-                        //System.out.println("Waiting " + getName());
                         commentator.wait();
                     } else{
                         if(commentator.getCurrentMaxScore() != AMOUNT_OF_SIDES * numberOfDice){
@@ -55,7 +54,6 @@ public class Player extends Thread implements Comparable<Player>{
                             commentator.decreaseNumberOfPlayers();
                             commentator.printRoundWinner();
                         }
-                        //System.out.println("Notify " + getName());
                         commentator.notifyAll();
                     }
                 }
