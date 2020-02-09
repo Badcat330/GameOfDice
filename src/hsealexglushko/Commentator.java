@@ -3,6 +3,12 @@ package hsealexglushko;
 import java.util.ArrayList;
 import java.util.Vector;
 
+/**
+ * Class for implementing commentator, it print results
+ * and contain all useful information
+ * @version 1.0 09 Feb 2020
+ * @author Alex Glushko
+ */
 public class Commentator{
 
     private ArrayList<Player> resultTable = new ArrayList<>();
@@ -44,6 +50,11 @@ public class Commentator{
         resultTable.addAll(players);
     }
 
+    /**
+     * Print results and collect information about current winner
+     * @param points number of points player get
+     * @param player who get this points
+     */
     void writeResult(int points, Player player){
         if(points > currentMaxScore){
             currentWinner = player;
@@ -63,6 +74,9 @@ public class Commentator{
         }
     }
 
+    /**
+     * Print result of round
+     */
     void printRoundWinner(){
         currentWinner.winIncrease();
         System.out.println("We have winner! It is " + currentWinner +
@@ -74,6 +88,9 @@ public class Commentator{
         --numberOfRoundsLeft;
     }
 
+    /**
+     * print result of match
+     */
     void printMatchWinner(){
         currentWinner.winIncrease();
         resultTable.sort(Player::compareTo);
@@ -81,6 +98,9 @@ public class Commentator{
         printResultTable();
     }
 
+    /**
+     * print table of players
+     */
     public void printResultTable(){
         System.out.println("Result table:");
         int i = 1;

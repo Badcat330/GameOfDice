@@ -2,19 +2,25 @@ package hsealexglushko;
 
 import java.util.Random;
 
+/**
+ * Class for implementing the player as a thread
+ * and the methods needed to implement the dice roll.
+ * @version 1.0 09 Feb 2020
+ * @author Alex Glushko
+ */
 public class Player extends Thread implements Comparable<Player>{
 
     private int countOfWins;
     private int numberOfDice;
-    final private static Random random = new Random();
     final private Commentator commentator;
+    final private static Random random = new Random();
     final private static int AMOUNT_OF_SIDES = 6;
 
     public Player(String name, Commentator commentator, int numberOfDice){
         super(name);
         this.commentator = commentator;
-        countOfWins = 0;
         this.numberOfDice = numberOfDice;
+        countOfWins = 0;
     }
 
     public int getCountOfWins(){
@@ -25,6 +31,11 @@ public class Player extends Thread implements Comparable<Player>{
         ++countOfWins;
     }
 
+    /**
+     * Randomize number of points that player
+     * throw in current turn
+     * @return result of throws
+     */
     int getPoints(){
         int points = 0;
         for(int i = 0; i < numberOfDice; i++){
@@ -88,4 +99,4 @@ public class Player extends Thread implements Comparable<Player>{
     public String toString(){
         return getName();
     }
-}
+}//Player
