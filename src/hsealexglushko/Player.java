@@ -48,7 +48,7 @@ public class Player extends Thread implements Comparable<Player>{
     public void run(){
         synchronized(commentator){
             try{
-                while(commentator.getNumberOfRoundsLeft() != 1){
+                while(!commentator.isSomeOneWin()){
 
                     if(commentator.getHowManyPlayersLast() > 1){
                         if(commentator.getCurrentMaxScore() != AMOUNT_OF_SIDES * numberOfDice){
@@ -67,21 +67,6 @@ public class Player extends Thread implements Comparable<Player>{
                         commentator.notifyAll();
                     }
                 }
-                if(commentator.getHowManyPlayersLast() > 1){
-                    if(commentator.getCurrentMaxScore() != AMOUNT_OF_SIDES * numberOfDice){
-                        commentator.writeResult(getPoints(), this);
-                    } else {
-                        commentator.decreaseNumberOfPlayers();
-                    }
-                } else{
-                    if(commentator.getCurrentMaxScore() != AMOUNT_OF_SIDES * numberOfDice){
-                        commentator.writeResult(getPoints(), this);
-                    } else {
-                        commentator.decreaseNumberOfPlayers();
-                        commentator.printMatchWinner();
-                    }
-                }
-
             } catch(InterruptedException e){
                 System.out.println("Something go wrong! Thread name: " + getName());
             }  catch(Exception e){

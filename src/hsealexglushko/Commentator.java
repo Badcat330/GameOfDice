@@ -62,7 +62,9 @@ public class Commentator{
         }
 
         if(howManyPlayersLast == 1){
-            if(numberOfRoundsLeft != 1){
+            currentWinner.winIncrease();
+            resultTable.sort(Player::compareTo);
+            if(!isSomeOneWin()){
                 printRoundWinner();
             } else {
                 printMatchWinner();
@@ -75,25 +77,28 @@ public class Commentator{
     }
 
     /**
+     * Check if someone have enough wins for end the game
+     * @return if game is ready to finish
+     */
+    boolean isSomeOneWin(){
+        return numberOfRoundsLeft == resultTable.get(0).getCountOfWins();
+    }
+
+    /**
      * Print result of round
      */
     void printRoundWinner(){
-        currentWinner.winIncrease();
         System.out.println("We have winner! It is " + currentWinner +
                 "! He got " + currentMaxScore + " points!\n Congratulations!");
-        resultTable.sort(Player::compareTo);
         System.out.println("Our current leader is " + resultTable.get(0) + "!\n");
         currentMaxScore = 0;
         howManyPlayersLast = numberOfPlayers;
-        --numberOfRoundsLeft;
     }
 
     /**
      * print result of match
      */
     void printMatchWinner(){
-        currentWinner.winIncrease();
-        resultTable.sort(Player::compareTo);
         System.out.println("All game win " + resultTable.get(0) + "! \n Congratulations! \n");
         printResultTable();
     }
